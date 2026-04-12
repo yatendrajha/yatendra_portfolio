@@ -1,0 +1,118 @@
+{
+  "entities": {
+    "profile": {
+      "title": "Profile",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "title": { "type": "string" },
+        "bio": { "type": "string" },
+        "location": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "linkedin": { "type": "string" },
+        "instagram": { "type": "string" },
+        "address": { "type": "string" },
+        "profileImage": { "type": "string" },
+        "skills": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["name", "email"]
+    },
+    "experience": {
+      "title": "Experience",
+      "description": "Professional experience entry",
+      "type": "object",
+      "properties": {
+        "role": { "type": "string" },
+        "company": { "type": "string" },
+        "period": { "type": "string" },
+        "description": { "type": "string" },
+        "impact": { "type": "array", "items": { "type": "string" } },
+        "order": { "type": "number" }
+      }
+    },
+    "education": {
+      "title": "Education",
+      "description": "Education entry",
+      "type": "object",
+      "properties": {
+        "degree": { "type": "string" },
+        "school": { "type": "string" },
+        "period": { "type": "string" },
+        "order": { "type": "number" }
+      }
+    },
+    "product": {
+      "title": "Product",
+      "description": "Product case study",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "problem": { "type": "string" },
+        "bet": { "type": "string" },
+        "decisions": { "type": "string" },
+        "impact": { "type": "array", "items": { "type": "string" } },
+        "image": { "type": "string" },
+        "color": { "type": "string" },
+        "order": { "type": "number" }
+      }
+    },
+    "visitor": {
+      "title": "Visitor",
+      "description": "Daily visitor count",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string" },
+        "count": { "type": "number" }
+      }
+    },
+    "download": {
+      "title": "Download",
+      "description": "Resume download record",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "timestamp": { "type": "string" }
+      }
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Blog post",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "content": { "type": "string" },
+        "category": { "type": "string" },
+        "date": { "type": "string" },
+        "author": { "type": "string" },
+        "timestamp": { "type": "string" }
+      }
+    },
+    "comment": {
+      "title": "Comment",
+      "description": "Blog post comment",
+      "type": "object",
+      "properties": {
+        "blogId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "content": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "timestamp": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/profile/main": { "schema": "profile", "description": "Main profile data" },
+    "/experience/{id}": { "schema": "experience", "description": "Experience entries" },
+    "/education/{id}": { "schema": "education", "description": "Education entries" },
+    "/products/{id}": { "schema": "product", "description": "Product case studies" },
+    "/analytics/visitors/daily/{date}": { "schema": "visitor", "description": "Daily visitor stats" },
+    "/analytics/downloads/{id}": { "schema": "download", "description": "Resume download logs" },
+    "/blogs/{id}": { "schema": "blog", "description": "Blog posts" },
+    "/comments/{id}": { "schema": "comment", "description": "Blog comments" }
+  }
+}

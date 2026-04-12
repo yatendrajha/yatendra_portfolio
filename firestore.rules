@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        request.auth.token.email == "yatendra.yuva@gmail.com";
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /config/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /profile/main {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /experience/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /education/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /products/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /analytics/visitors/daily/{date} {
+      allow read: if isAuthenticated();
+      allow create, update: if true;
+    }
+
+    match /analytics/downloads/logs/{id} {
+      allow read: if isAuthenticated();
+      allow create: if true;
+    }
+
+    match /blogs/{id} {
+      allow read: if true;
+      allow write: if true; // Allow server to write
+    }
+
+    match /comments/{id} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+  }
+}
