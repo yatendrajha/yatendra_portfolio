@@ -69,13 +69,13 @@ export default function Products() {
   return (
     <div className="space-y-16">
       <div className="text-center space-y-4">
-        <h2 className="text-4xl font-extrabold tracking-tight text-[#1C1C1E]">Product Case Studies</h2>
-        <p className="text-[#8E8E93] max-w-2xl mx-auto text-lg">
+        <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white uppercase italic">Product Case Studies</h2>
+        <p className="text-white/60 max-w-2xl mx-auto text-lg font-medium">
           Strategic transformations and platform innovations in Fintech and AI.
         </p>
       </div>
 
-      <div className="space-y-24">
+      <div className="space-y-32">
         {displayProducts.map((product, i) => {
           const Icon = product.icon || Zap;
           return (
@@ -84,63 +84,63 @@ export default function Products() {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ duration: 0.8 }}
               className={cn(
-                "flex flex-col gap-12 items-center",
+                "flex flex-col gap-16 items-center",
                 i % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
               )}
             >
               {/* Image Side */}
               <div className="w-full lg:w-1/2">
                 <div className={cn(
-                  "relative rounded-[3rem] overflow-hidden bg-gradient-to-br shadow-2xl shadow-blue-100/50 group",
-                  product.color || "from-blue-500/20 to-blue-600/10"
+                  "relative rounded-[3.5rem] overflow-hidden bg-slate-900 border border-white/5 shadow-2xl group",
                 )}>
                   <img 
                     src={product.image} 
                     alt={product.title}
-                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
-                  <div className="absolute top-6 left-6">
-                    <div className="p-4 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg">
-                      <Icon size={24} className="text-blue-600" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#000c19] via-transparent to-transparent opacity-60" />
+                  <div className="absolute top-8 left-8">
+                    <div className="p-4 bg-primary rounded-2xl shadow-[0_0_20px_rgba(14,165,233,0.4)]">
+                      <Icon size={24} className="text-white" />
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Content Side */}
-              <div className="w-full lg:w-1/2 space-y-8">
+              <div className="w-full lg:w-1/2 space-y-10">
                 <div className="space-y-4">
-                  <Badge variant="outline" className="rounded-full bg-blue-50/50 text-blue-600 border-blue-100/50 px-4 py-1">Case Study</Badge>
-                  <h3 className="text-3xl font-bold text-[#1C1C1E]">{product.title}</h3>
-                  <p className="text-lg text-[#8E8E93] leading-relaxed">{product.description}</p>
+                  <Badge variant="outline" className="rounded-full bg-primary/20 text-primary border-primary/30 px-4 py-1.5 font-black text-[10px] uppercase tracking-widest">Case Study</Badge>
+                  <h3 className="text-3xl md:text-4xl font-black text-white tracking-tight uppercase leading-none">{product.title}</h3>
+                  <p className="text-lg text-white/70 leading-relaxed font-medium">{product.description}</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-blue-600">The Problem</h4>
-                    <p className="text-sm text-[#1C1C1E] leading-relaxed opacity-80">{product.problem}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">The Problem</h4>
+                    <p className="text-sm text-white/80 leading-relaxed font-bold">{product.problem}</p>
                   </div>
-                  <div className="space-y-2">
-                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-purple-600">The Bet</h4>
-                    <p className="text-sm text-[#1C1C1E] leading-relaxed opacity-80">{product.bet}</p>
+                  <div className="space-y-3">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-400">The Bet</h4>
+                    <p className="text-sm text-white/80 leading-relaxed font-bold">{product.bet}</p>
                   </div>
                 </div>
 
-                <div className="p-6 bg-white/60 backdrop-blur-md rounded-[2rem] border border-white/20 shadow-sm space-y-4">
-                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-[#1C1C1E]">Key Decisions</h4>
-                  <p className="text-sm text-[#8E8E93] leading-relaxed">{product.decisions}</p>
+                <div className="p-8 bg-white/5 backdrop-blur-3xl rounded-[2.5rem] border border-white/10 shadow-2xl space-y-4 relative overflow-hidden group">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/80">Key Strategic Decisions</h4>
+                  <p className="text-sm text-white/90 leading-relaxed font-medium">{product.decisions}</p>
                 </div>
 
-                <div className="space-y-4">
-                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-[#1C1C1E]">Impact</h4>
+                <div className="space-y-6">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">Measurable Impact</h4>
                   <div className="flex flex-wrap gap-3">
                     {product.impact?.map((item: string) => (
-                      <div key={item} className="flex items-center gap-2 bg-green-50/50 text-green-700 px-4 py-2 rounded-full text-xs font-bold border border-green-100/50">
-                        <CheckCircle2 size={14} />
+                      <div key={item} className="flex items-center gap-2 bg-emerald-500/10 text-emerald-400 px-5 py-2.5 rounded-full text-xs font-black border border-emerald-500/20 group-hover:bg-emerald-500/20 transition-all">
+                        <CheckCircle2 size={14} className="text-emerald-500" />
                         {item}
                       </div>
                     ))}

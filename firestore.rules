@@ -43,12 +43,22 @@ service cloud.firestore {
     }
 
     match /analytics/visitors/daily/{date} {
-      allow read: if isAuthenticated();
+      allow read: if isAdmin();
       allow create, update: if true;
     }
 
+    match /analytics/visitors/details/{id} {
+      allow read: if isAdmin();
+      allow create: if true;
+    }
+
     match /analytics/downloads/logs/{id} {
-      allow read: if isAuthenticated();
+      allow read: if isAdmin();
+      allow create: if true;
+    }
+
+    match /analytics/system/logs/{id} {
+      allow read: if isAdmin();
       allow create: if true;
     }
 

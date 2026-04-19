@@ -92,8 +92,8 @@ export default function Contact() {
   return (
     <div className="max-w-5xl mx-auto space-y-12">
       <div className="text-center space-y-4">
-        <h2 className="text-4xl font-extrabold tracking-tight text-[#1C1C1E]">Get in Touch</h2>
-        <p className="text-[#8E8E93] max-w-md mx-auto">
+        <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white uppercase italic">Get in Touch</h2>
+        <p className="text-white/60 max-w-md mx-auto font-medium">
           Have a project in mind or want to discuss product strategy? I'm always open to new opportunities.
         </p>
       </div>
@@ -111,14 +111,14 @@ export default function Contact() {
               transition={{ delay: index * 0.1 }}
               className="block"
             >
-              <Card className="rounded-3xl border-none shadow-sm hover:shadow-md transition-all bg-white/60 backdrop-blur-md overflow-hidden group">
+              <Card className="rounded-[2rem] border-white/5 shadow-2xl hover:shadow-primary/10 transition-all bg-white/5 backdrop-blur-3xl overflow-hidden group border hover:border-primary/30">
                 <CardContent className="p-6 flex items-center gap-4">
-                  <div className={`p-3 rounded-2xl ${info.color} transition-transform group-hover:scale-110`}>
+                  <div className={`p-4 rounded-2xl bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-white shadow-inner`}>
                     <info.icon size={24} />
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-[#8E8E93] uppercase tracking-wider">{info.label}</p>
-                    <p className="text-sm font-bold text-[#1C1C1E]">{info.value}</p>
+                    <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em]">{info.label}</p>
+                    <p className="text-sm font-black text-white">{info.value}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -127,108 +127,110 @@ export default function Contact() {
         </div>
 
         <div className="lg:col-span-2">
-          <Card className="rounded-[2.5rem] border-none shadow-sm bg-white/60 backdrop-blur-md overflow-hidden">
-            <CardContent className="p-8 md:p-10">
+          <Card className="rounded-[3rem] border-white/5 shadow-2xl bg-card backdrop-blur-3xl overflow-hidden border">
+            <CardContent className="p-8 md:p-12">
               {isSuccess ? (
                 <motion.div 
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center justify-center py-12 text-center space-y-4"
+                   initial={{ opacity: 0, scale: 0.9 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   className="flex flex-col items-center justify-center py-12 text-center space-y-6"
                 >
-                  <div className="p-4 bg-green-100 text-green-600 rounded-full">
-                    <CheckCircle2 size={48} />
+                  <div className="p-6 bg-emerald-500/10 text-emerald-400 rounded-full shadow-[0_0_30px_rgba(16,185,129,0.2)]">
+                    <CheckCircle2 size={64} />
                   </div>
-                  <h3 className="text-2xl font-bold text-[#1C1C1E]">Message Sent!</h3>
-                  <p className="text-[#8E8E93]">
-                    Thank you for reaching out. I'll get back to you as soon as possible.
-                  </p>
+                  <div className="space-y-2">
+                    <h3 className="text-3xl font-black text-white uppercase tracking-tight">Transmission Received</h3>
+                    <p className="text-white/60 font-medium">
+                      Thank you for reaching out. I'll get back to you as soon as possible.
+                    </p>
+                  </div>
                   <Button 
-                    variant="outline" 
+                    variant="ghost" 
                     onClick={() => setIsSuccess(false)}
-                    className="rounded-full px-8"
+                    className="rounded-2xl px-10 h-14 bg-primary text-white font-black uppercase tracking-widest text-xs hover:bg-primary/80 transition-all"
                   >
                     Send another message
                   </Button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="text-sm font-semibold text-[#1C1C1E] ml-1">Name</Label>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                  <div className="grid sm:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <Label htmlFor="name" className="text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">Name</Label>
                       <div className="relative">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8E8E93]" size={18} />
+                        <User className="absolute left-5 top-1/2 -translate-y-1/2 text-primary/40" size={20} />
                         <Input 
                           id="name"
                           {...register("name")}
-                          placeholder="John Doe" 
+                          placeholder="Your identity" 
                           className={cn(
-                            "pl-12 py-6 rounded-2xl border-white/20 bg-white/40 focus:bg-white transition-all",
-                            errors.name && "border-red-500 focus:ring-red-500/20"
+                            "pl-14 h-14 rounded-2xl border-white/5 bg-white/5 focus:bg-white/10 text-white placeholder:text-white/20 transition-all font-bold",
+                            errors.name && "border-red-500/50"
                           )}
                         />
                       </div>
-                      {errors.name && <p className="text-xs text-red-500 ml-1">{errors.name.message}</p>}
+                      {errors.name && <p className="text-[10px] font-black text-red-500 uppercase tracking-tighter ml-1">{errors.name.message}</p>}
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-sm font-semibold text-[#1C1C1E] ml-1">Email</Label>
+                    <div className="space-y-3">
+                      <Label htmlFor="email" className="text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">Email Address</Label>
                       <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8E8E93]" size={18} />
+                        <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-primary/40" size={20} />
                         <Input 
                           id="email"
                           {...register("email")}
-                          placeholder="john@example.com" 
+                          placeholder="node@example.com" 
                           className={cn(
-                            "pl-12 py-6 rounded-2xl border-white/20 bg-white/40 focus:bg-white transition-all",
-                            errors.email && "border-red-500 focus:ring-red-500/20"
+                            "pl-14 h-14 rounded-2xl border-white/5 bg-white/5 focus:bg-white/10 text-white placeholder:text-white/20 transition-all font-bold",
+                            errors.email && "border-red-500/50"
                           )}
                         />
                       </div>
-                      {errors.email && <p className="text-xs text-red-500 ml-1">{errors.email.message}</p>}
+                      {errors.email && <p className="text-[10px] font-black text-red-500 uppercase tracking-tighter ml-1">{errors.email.message}</p>}
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="subject" className="text-sm font-semibold text-[#1C1C1E] ml-1">Subject</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="subject" className="text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">Subject</Label>
                     <Input 
                       id="subject"
                       {...register("subject")}
-                      placeholder="Project Inquiry" 
+                      placeholder="Strategy Inquiry" 
                       className={cn(
-                        "py-6 rounded-2xl border-white/20 bg-white/40 focus:bg-white transition-all",
-                        errors.subject && "border-red-500 focus:ring-red-500/20"
+                        "h-14 rounded-2xl border-white/5 bg-white/5 focus:bg-white/10 text-white placeholder:text-white/20 transition-all font-bold px-6",
+                        errors.subject && "border-red-500/50"
                       )}
                     />
-                    {errors.subject && <p className="text-xs text-red-500 ml-1">{errors.subject.message}</p>}
+                    {errors.subject && <p className="text-[10px] font-black text-red-500 uppercase tracking-tighter ml-1">{errors.subject.message}</p>}
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="message" className="text-sm font-semibold text-[#1C1C1E] ml-1">Message</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="message" className="text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">Message Body</Label>
                     <Textarea 
                       id="message"
                       {...register("message")}
-                      placeholder="Tell me about your project..." 
+                      placeholder="Transmission details..." 
                       className={cn(
-                        "min-h-[150px] rounded-[2rem] border-white/20 bg-white/40 focus:bg-white transition-all p-6",
-                        errors.message && "border-red-500 focus:ring-red-500/20"
+                        "min-h-[180px] rounded-[2.5rem] border-white/5 bg-white/5 focus:bg-white/10 text-white placeholder:text-white/20 transition-all p-8 font-medium leading-relaxed resize-none",
+                        errors.message && "border-red-500/50"
                       )}
                     />
-                    {errors.message && <p className="text-xs text-red-500 ml-1">{errors.message.message}</p>}
+                    {errors.message && <p className="text-[10px] font-black text-red-500 uppercase tracking-tighter ml-1">{errors.message.message}</p>}
                   </div>
 
                   <Button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-full py-7 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-lg shadow-blue-200 transition-all flex items-center justify-center gap-2"
+                    className="w-full h-16 rounded-2xl bg-primary hover:bg-primary/90 text-white font-black text-xs uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"
                   >
                     {isSubmitting ? (
                       <>
                         <Loader2 className="animate-spin" size={20} />
-                        Sending...
+                        Transmitting...
                       </>
                     ) : (
                       <>
-                        <Send size={20} />
-                        Send Message
+                        <Send size={18} />
+                        Send Transmission
                       </>
                     )}
                   </Button>

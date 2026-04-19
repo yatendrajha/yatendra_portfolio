@@ -16,7 +16,6 @@ interface LayoutProps {
 const navItems = [
   { id: 'about', label: 'About', icon: User },
   { id: 'products', label: 'Products', icon: Briefcase },
-  { id: 'blog', label: 'Blog', icon: BookOpen },
   { id: 'contact', label: 'Contact', icon: Mail },
 ];
 
@@ -42,10 +41,22 @@ export default function Layout({ children, activeSection, setActiveSection }: La
 
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
+    // Prompt the user to select an account even if they're already signed in
+    provider.setCustomParameters({ prompt: 'select_account' });
+    
     try {
       await signInWithPopup(auth, provider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
+      if (error.code === 'auth/unauthorized-domain') {
+        alert(`Authentication failed: The domain "${window.location.hostname}" is not authorized in your Firebase Project configuration. Please add it to the "Authorized Domains" list in the Firebase Console (Authentication > Settings).`);
+      } else if (error.code === 'auth/popup-closed-by-user') {
+        // This is normal if they close it, but if it closes "automatically", 
+        // it might be a cookie/domain issue being misreported.
+        console.warn("Popup closed by user or automatically. Check if third-party cookies are blocked.");
+      } else {
+        alert(`Login failed: ${error.message} (Code: ${error.code})`);
+      }
     }
   };
 
@@ -67,29 +78,32 @@ export default function Layout({ children, activeSection, setActiveSection }: La
   const isAdmin = user?.email === 'yatendra.yuva@gmail.com';
 
   return (
-    <div className="min-h-screen bg-[#F2F2F7] text-[#1C1C1E] font-sans selection:bg-blue-500/30 select-none">
+    <div className="min-h-screen bg-transparent text-foreground font-sans selection:bg-primary/30 select-none antialiased">
       {/* iOS Style Status Bar / Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/40 backdrop-blur-2xl border-b border-white/20 px-6 py-4 flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#001b3d]/40 backdrop-blur-2xl border-b border-white/5 px-6 py-4 flex items-center justify-between">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="text-xl font-bold tracking-tight cursor-pointer"
+          className="text-xl font-bold tracking-tight cursor-pointer flex items-center gap-2"
           onClick={() => setActiveSection('about')}
         >
-          Yatendra <span className="text-blue-600">Jha</span>
+          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+            Y
+          </div>
+          <span className="text-white">Yatendra <span className="text-primary font-black">Jha</span></span>
         </motion.div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-1 bg-white/30 backdrop-blur-md p-1 rounded-2xl border border-white/20 shadow-sm">
+        <nav className="hidden md:flex items-center space-x-1 bg-white/5 backdrop-blur-md p-1 rounded-2xl border border-white/10 shadow-inner">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveSection(item.id)}
               className={cn(
-                "px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2",
+                "px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2",
                 activeSection === item.id 
-                  ? "bg-white/80 text-blue-600 shadow-sm" 
-                  : "text-[#8E8E93] hover:text-[#1C1C1E]"
+                  ? "bg-primary text-white shadow-xl shadow-primary/20" 
+                  : "text-white/60 hover:text-white hover:bg-white/5"
               )}
             >
               <item.icon size={16} />
@@ -100,10 +114,10 @@ export default function Layout({ children, activeSection, setActiveSection }: La
             <button
               onClick={() => setActiveSection('admin')}
               className={cn(
-                "px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-2",
+                "px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center gap-2",
                 activeSection === 'admin' 
-                  ? "bg-white/80 text-blue-600 shadow-sm" 
-                  : "text-[#8E8E93] hover:text-[#1C1C1E]"
+                  ? "bg-primary text-white shadow-xl shadow-primary/20" 
+                  : "text-white/60 hover:text-white hover:bg-white/5"
               )}
             >
               <Settings size={16} />
@@ -114,8 +128,8 @@ export default function Layout({ children, activeSection, setActiveSection }: La
 
         <div className="flex items-center gap-3">
           <Button 
-            variant="outline" 
-            className="hidden sm:flex items-center gap-2 rounded-full border-white/40 bg-white/20 backdrop-blur-md hover:bg-white/40"
+            variant="ghost" 
+            className="hidden sm:flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 text-white font-semibold"
             onClick={handleDownloadResume}
           >
             <Download size={16} />
@@ -237,18 +251,18 @@ export default function Layout({ children, activeSection, setActiveSection }: La
       </main>
 
       {/* iOS Style Tab Bar for Mobile */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/40 backdrop-blur-2xl border-t border-white/20 px-6 py-3 flex justify-between items-center z-50">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#001b3d]/60 backdrop-blur-2xl border-t border-white/5 px-6 py-3 flex justify-between items-center z-50">
         {navItems.map((item) => (
           <button
             key={item.id}
             onClick={() => setActiveSection(item.id)}
             className={cn(
               "flex flex-col items-center gap-1 transition-colors",
-              activeSection === item.id ? "text-blue-600" : "text-[#8E8E93]"
+              activeSection === item.id ? "text-primary" : "text-white/40"
             )}
           >
-            <item.icon size={24} />
-            <span className="text-[10px] font-medium uppercase tracking-wider">{item.label}</span>
+            <item.icon size={22} />
+            <span className="text-[10px] font-bold uppercase tracking-wider">{item.label}</span>
           </button>
         ))}
       </nav>
