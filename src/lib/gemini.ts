@@ -23,12 +23,6 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
     return cachedPosts;
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    console.error("GEMINI_API_KEY is missing. Please set it in your environment variables.");
-    return cachedPosts;
-  }
-
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",

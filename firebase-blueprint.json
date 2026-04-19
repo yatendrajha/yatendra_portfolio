@@ -15,19 +15,7 @@
         "instagram": { "type": "string" },
         "address": { "type": "string" },
         "profileImage": { "type": "string" },
-        "skills": { "type": "array", "items": { "type": "string" } },
-        "maintenanceGroups": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "id": { "type": "string" },
-              "name": { "type": "string" },
-              "content": { "type": "string" },
-              "order": { "type": "number" }
-            }
-          }
-        }
+        "skills": { "type": "array", "items": { "type": "string" } }
       },
       "required": ["name", "email"]
     },
@@ -89,24 +77,31 @@
         "timestamp": { "type": "string" }
       }
     },
-    "visitor_detail": {
-      "title": "Visitor Detail",
-      "description": "Detailed info about each visitor",
+    "blog": {
+      "title": "Blog",
+      "description": "Blog post",
       "type": "object",
       "properties": {
-        "ip": { "type": "string" },
-        "location": { "type": "string" },
+        "title": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "content": { "type": "string" },
+        "category": { "type": "string" },
+        "date": { "type": "string" },
+        "author": { "type": "string" },
         "timestamp": { "type": "string" }
       }
     },
-    "log": {
-      "title": "Log",
-      "description": "System error log",
+    "comment": {
+      "title": "Comment",
+      "description": "Blog post comment",
       "type": "object",
       "properties": {
-        "date": { "type": "string" },
-        "message": { "type": "string" },
-        "stack": { "type": "string" }
+        "blogId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "content": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "timestamp": { "type": "string" }
       }
     }
   },
@@ -116,8 +111,8 @@
     "/education/{id}": { "schema": "education", "description": "Education entries" },
     "/products/{id}": { "schema": "product", "description": "Product case studies" },
     "/analytics/visitors/daily/{date}": { "schema": "visitor", "description": "Daily visitor stats" },
-    "/analytics/visitors/details/{id}": { "schema": "visitor_detail", "description": "Individual visitor records" },
-    "/analytics/system/logs/{id}": { "schema": "log", "description": "Error logs" },
-    "/analytics/downloads/logs/{id}": { "schema": "download", "description": "Resume download logs" }
+    "/analytics/downloads/{id}": { "schema": "download", "description": "Resume download logs" },
+    "/blogs/{id}": { "schema": "blog", "description": "Blog posts" },
+    "/comments/{id}": { "schema": "comment", "description": "Blog comments" }
   }
 }

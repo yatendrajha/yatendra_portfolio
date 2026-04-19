@@ -139,46 +139,70 @@ export default function AboutMe() {
   return (
     <div className="space-y-8">
       {/* Hero Section */}
-      <section className="relative overflow-hidden flex flex-col md:flex-row items-center gap-8 bg-card backdrop-blur-3xl p-8 rounded-[2.5rem] shadow-2xl border border-white/5">
+      <section className="relative overflow-hidden flex flex-col md:flex-row items-center gap-8 bg-white/60 backdrop-blur-md p-8 rounded-[2.5rem] shadow-sm border border-white/20">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div 
             animate={{ 
               scale: [1, 1.2, 1],
               rotate: [0, 90, 0],
-              opacity: [0.1, 0.2, 0.1]
+              opacity: [0.05, 0.1, 0.05]
             }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute -top-24 -right-24 w-96 h-96 bg-primary/20 rounded-full blur-3xl"
+            className="absolute -top-24 -right-24 w-96 h-96 bg-blue-400 rounded-full blur-3xl"
+          />
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.5, 1],
+              rotate: [0, -90, 0],
+              opacity: [0.03, 0.08, 0.03]
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute -bottom-48 -left-48 w-[30rem] h-[30rem] bg-purple-400 rounded-full blur-3xl"
           />
         </div>
 
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 w-full">
           <div className="relative">
-            <div className="w-32 h-32 md:w-48 md:h-48 rounded-[2.5rem] overflow-hidden border-4 border-white/10 shadow-2xl bg-slate-900/50">
+            <div className="w-32 h-32 md:w-48 md:h-48 rounded-[2.5rem] overflow-hidden border-4 border-white shadow-xl bg-gray-100">
               <img 
                 src={displayProfile.profileImage || defaultProfile.profileImage} 
                 alt={displayProfile.name} 
-                className="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-500"
+                className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = defaultProfile.profileImage;
+                }}
               />
             </div>
+            <motion.div 
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="absolute -bottom-2 -right-2 bg-blue-600 p-2 rounded-full border-4 border-white text-white shadow-lg"
+            >
+              <Award size={16} />
+            </motion.div>
           </div>
           
           <div className="flex-1 text-center md:text-left space-y-4">
             <div className="space-y-1">
-              <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white uppercase drop-shadow-sm">
+              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#1C1C1E]">
                 {displayProfile.name}
               </h1>
-              <p className="text-xl text-primary font-bold tracking-wide italic">{displayProfile.title}</p>
+              <p className="text-xl text-blue-600 font-medium">{displayProfile.title}</p>
             </div>
-            <p className="text-white/70 max-w-2xl leading-relaxed text-lg font-medium">
+            <p className="text-[#8E8E93] max-w-2xl leading-relaxed">
               {displayProfile.bio}
             </p>
-            <div className="flex flex-wrap justify-center md:justify-start gap-4 text-xs font-bold uppercase tracking-widest text-primary/80">
-              <span className="flex items-center gap-1.5"><MapPin size={14} /> {displayProfile.address}</span>
-              <span className="flex items-center gap-1.5"><Mail size={14} /> {displayProfile.email}</span>
-              <span className="flex items-center gap-1.5"><Phone size={14} /> {displayProfile.phone}</span>
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-[#8E8E93]">
+              <span className="flex items-center gap-1"><MapPin size={14} /> {displayProfile.address}</span>
+              <span className="flex items-center gap-1"><Mail size={14} /> {displayProfile.email}</span>
+              <span className="flex items-center gap-1"><Phone size={14} /> {displayProfile.phone}</span>
+              {displayProfile.linkedin && (
+                <a href={`https://${displayProfile.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-blue-600 transition-colors">
+                  <Globe size={14} /> {displayProfile.linkedin}
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -187,47 +211,61 @@ export default function AboutMe() {
       <div className="grid md:grid-cols-3 gap-8">
         {/* Left Column: Skills & Education */}
         <div className="md:col-span-1 space-y-8">
-          <Card className="rounded-[2rem] border-white/5 shadow-2xl bg-card backdrop-blur-2xl overflow-hidden">
+          <Card className="rounded-[2rem] border-none shadow-sm bg-white/60 backdrop-blur-md overflow-hidden">
             <CardContent className="p-6 space-y-6">
-              <div className="flex items-center gap-3 text-primary">
+              <div className="flex items-center gap-3 text-blue-600">
                 <Code size={20} />
-                <h3 className="font-black text-xs uppercase tracking-[0.2em] text-white">Core Expertise</h3>
+                <h3 className="font-bold text-lg">Core Expertise</h3>
               </div>
               <div className="grid grid-cols-1 gap-3">
                 {skills.map((skill: string, index: number) => (
                   <motion.div 
                     key={skill}
                     initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 group hover:bg-primary/20 hover:border-primary/50 transition-all duration-300"
+                    className="flex items-center gap-3 p-2 rounded-xl bg-white/40 border border-white/20 group hover:bg-blue-50/50 transition-colors"
                   >
-                    <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(14,165,233,0.5)] group-hover:scale-125 transition-transform" />
-                    <span className="text-sm font-bold text-white/90">{skill}</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-600 group-hover:scale-150 transition-transform" />
+                    <span className="text-sm font-medium text-[#1C1C1E]">{skill}</span>
                   </motion.div>
                 ))}
               </div>
             </CardContent>
           </Card>
 
-          <Card className="rounded-[2rem] border-white/5 shadow-2xl bg-card backdrop-blur-2xl overflow-hidden">
+          <Card className="rounded-[2rem] border-none shadow-sm bg-white/60 backdrop-blur-md overflow-hidden">
             <CardContent className="p-6 space-y-6">
-              <div className="flex items-center gap-3 text-primary">
+              <div className="flex items-center gap-3 text-blue-600">
                 <GraduationCap size={20} />
-                <h3 className="font-black text-xs uppercase tracking-[0.2em] text-white">Education</h3>
+                <h3 className="font-bold text-lg">Education</h3>
               </div>
-              <div className="space-y-6">
-                {(education.length > 0 ? education : [
-                    { degree: 'PGDM', school: 'L.N. Welingkar Institute of Management', period: '2016 – 2018' },
-                    { degree: 'Bachelor of Management Studies', school: 'Lala Lajpat Rai College', period: '2011 - 2013' },
-                    { degree: 'Generative AI Foundations Certificate', school: 'Upgrad & Microsoft', period: '2025' }
-                ]).map((edu, idx) => (
-                  <div key={idx} className="relative pl-6 before:absolute before:left-0 before:top-1.5 before:w-1.5 before:h-1.5 before:bg-primary before:rounded-full before:shadow-[0_0_8px_rgba(14,165,233,0.8)]">
-                    <h4 className="font-black text-white text-sm uppercase tracking-wide">{edu.degree}</h4>
-                    <p className="text-xs text-white/60 font-semibold mt-1">{edu.school}</p>
-                    <p className="text-[10px] font-black text-primary mt-2 uppercase tracking-tighter bg-primary/10 inline-block px-2 py-0.5 rounded-md">{edu.period}</p>
+              <div className="space-y-5">
+                {education.length > 0 ? education.map((edu) => (
+                  <div key={edu.id} className="relative pl-4 before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full">
+                    <h4 className="font-bold text-gray-900">{edu.degree}</h4>
+                    <p className="text-sm text-gray-600 mt-0.5">{edu.school}</p>
+                    <p className="text-xs font-medium text-blue-600 mt-1">{edu.period}</p>
                   </div>
-                ))}
+                )) : (
+                  <>
+                    <div className="relative pl-4 before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full">
+                      <h4 className="font-bold text-gray-900">PGDM</h4>
+                      <p className="text-sm text-gray-600 mt-0.5">L.N. Welingkar Institute of Management</p>
+                      <p className="text-xs font-medium text-blue-600 mt-1">2016 – 2018</p>
+                    </div>
+                    <div className="relative pl-4 before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full">
+                      <h4 className="font-bold text-gray-900">Bachelor of Management Studies</h4>
+                      <p className="text-sm text-gray-600 mt-0.5">Lala Lajpat Rai College</p>
+                      <p className="text-xs font-medium text-blue-600 mt-1">2011 - 2013</p>
+                    </div>
+                    <div className="relative pl-4 before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-blue-400 before:rounded-full">
+                      <h4 className="font-bold text-gray-900">Generative AI Foundations Certificate Program</h4>
+                      <p className="text-sm text-gray-600 mt-0.5">Upgrad & Microsoft</p>
+                      <p className="text-xs font-medium text-blue-600 mt-1">2025</p>
+                    </div>
+                  </>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -235,71 +273,77 @@ export default function AboutMe() {
 
         {/* Right Column: Experience */}
         <div className="md:col-span-2">
-          <Card className="rounded-[2.5rem] border-white/5 shadow-2xl bg-card backdrop-blur-3xl h-full">
+          <Card className="rounded-[2rem] border-none shadow-sm bg-white/60 backdrop-blur-md h-full">
             <CardContent className="p-8 space-y-8">
-              <div className="flex items-center gap-3 text-primary">
+              <div className="flex items-center gap-3 text-blue-600">
                 <Briefcase size={24} />
-                <h3 className="font-black text-xs uppercase tracking-[0.3em] text-white">Professional Experience</h3>
+                <h3 className="font-bold text-xl">Professional Experience</h3>
               </div>
-              <div className="space-y-16 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-px before:bg-white/10">
+              <div className="space-y-12 relative before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-white/40">
                 {displayExperiences.map((exp, i) => (
                   <motion.div 
                     key={exp.id || i}
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="relative pl-12"
+                    className="relative pl-10"
                   >
-                    <div className="absolute left-1.5 top-1.5 w-5 h-5 rounded-full bg-[#000c19] border-2 border-primary z-10 shadow-[0_0_15px_rgba(14,165,233,0.5)]" />
-                    <div className="space-y-6">
-                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                    <div className="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-4 border-blue-600 z-10 shadow-sm" />
+                    <div className="space-y-4">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                         <div>
-                          <h4 className="text-xl font-black text-white tracking-tight uppercase">{exp.role}</h4>
-                          <div className="flex items-center gap-2 mt-2">
-                            <p className="font-black text-primary italic text-sm tracking-wide">{exp.company}</p>
+                          <h4 className="text-xl font-bold text-gray-900 tracking-tight">{exp.role}</h4>
+                          <div className="flex items-center gap-2 mt-1.5">
+                            <div className="flex items-center justify-center w-6 h-6 rounded-md bg-blue-50 text-blue-600">
+                              <Briefcase size={14} />
+                            </div>
+                            <p className="font-semibold text-blue-600">{exp.company}</p>
                           </div>
                         </div>
-                        <span className="inline-flex items-center text-[10px] font-black text-white/40 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 uppercase tracking-widest self-start">
+                        <span className="inline-flex items-center text-xs font-semibold text-gray-500 bg-gray-100/80 px-3 py-1.5 rounded-full border border-gray-200/50">
                           {exp.period}
                         </span>
                       </div>
                       
-                      <div className="space-y-4">
+                      <div className="pt-2">
                         {Array.isArray(exp.description) ? (
                           <ul className="space-y-3">
                             {exp.description.map((item: string, idx: number) => (
-                              <li key={idx} className="flex items-start gap-4 text-white/70 text-sm md:text-base leading-relaxed font-medium">
-                                <ChevronRight size={16} className="text-primary mt-1 shrink-0" />
+                              <li key={idx} className="flex items-start gap-3 text-gray-600 text-sm md:text-base leading-relaxed">
+                                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
                                 <span>{item}</span>
                               </li>
                             ))}
                           </ul>
                         ) : (
-                          <p className="text-white/70 leading-relaxed text-sm md:text-base font-medium">
+                          <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                             {exp.description}
                           </p>
                         )}
                       </div>
                       
                       {exp.impact && exp.impact.length > 0 && (
-                        <div className="mt-8 pt-8 border-t border-white/5">
-                          <div className="flex items-center gap-2 mb-6">
-                            <div className="w-8 h-px bg-primary/50" />
-                            <h5 className="font-black text-[10px] text-white uppercase tracking-[0.4em]">Strategy & Impact</h5>
+                        <div className="mt-6 pt-5 border-t border-gray-100/60">
+                          <div className="flex items-center gap-2 mb-4">
+                            <TrendingUp size={16} className="text-blue-600" strokeWidth={2.5} />
+                            <h5 className="font-bold text-sm text-gray-900 uppercase tracking-wider">Key Impact</h5>
                           </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             {exp.impact.map((imp: string, idx: number) => (
                               <motion.div
                                 key={idx}
-                                whileHover={{ y: -4, backgroundColor: 'rgba(255,255,255,0.05)' }}
-                                className="group relative bg-[#001b3d]/40 rounded-2xl p-4 border border-white/5 transition-all duration-300 overflow-hidden"
+                                whileHover={{ scale: 1.02, y: -2 }}
+                                className="group relative overflow-hidden bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300 cursor-default"
                               >
-                                <div className="absolute top-0 right-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity">
-                                    <Zap size={12} className="text-primary" />
+                                <div className="absolute top-0 left-0 w-1 h-full bg-blue-500 transform origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out" />
+                                <div className="flex items-start gap-3">
+                                  <div className="mt-0.5 bg-blue-50 text-blue-600 rounded-full p-1.5 shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                                    <Zap size={14} strokeWidth={2.5} />
+                                  </div>
+                                  <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors duration-300 leading-snug">
+                                    {imp}
+                                  </span>
                                 </div>
-                                <span className="text-sm font-bold text-white/80 group-hover:text-white leading-tight">
-                                  {imp}
-                                </span>
                               </motion.div>
                             ))}
                           </div>

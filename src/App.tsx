@@ -7,42 +7,28 @@ import React from 'react';
 import Layout from '@/components/Layout';
 import AboutMe from '@/components/sections/AboutMe';
 import Products from '@/components/sections/Products';
+import Blog from '@/components/sections/Blog';
 import Contact from '@/components/sections/Contact';
 import AdminPortal from '@/components/sections/AdminPortal';
 import { db } from '@/lib/firebase';
-import { doc, setDoc, increment, collection, addDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, increment } from 'firebase/firestore';
 
 export default function App() {
   const [activeSection, setActiveSection] = React.useState('about');
 
-  // Track daily visitors and capture IP/Location detail
+  // Track daily visitors
   React.useEffect(() => {
     const trackVisitor = async () => {
       const today = new Date().toISOString().split('T')[0];
       const visitorRef = doc(db, 'analytics/visitors/daily', today);
-      
       try {
-        // 1. Traditional daily counter
+        // Use setDoc with merge: true and increment to avoid needing read permission
         await setDoc(visitorRef, { 
           count: increment(1),
           date: today 
         }, { merge: true });
-
-        // 2. Specialized detail capture via backend API
-        const res = await fetch('/api/track', { method: 'POST' });
-        const { ip, location, country } = await res.json();
-
-        // 3. Store detail in Firestore
-        await addDoc(collection(db, 'analytics/visitors/details'), {
-          ip: ip || 'unknown',
-          location: location || 'unknown',
-          country: country || 'unknown',
-          timestamp: new Date().toISOString(),
-          userAgent: navigator.userAgent,
-          platform: navigator.platform
-        });
       } catch (err) {
-        console.error("Tracking failed", err);
+        // Silent fail for visitors
       }
     };
     trackVisitor();
@@ -54,6 +40,8 @@ export default function App() {
         return <AboutMe />;
       case 'products':
         return <Products />;
+      case 'blog':
+        return <Blog />;
       case 'contact':
         return <Contact />;
       case 'admin':
